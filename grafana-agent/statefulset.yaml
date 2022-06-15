@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: grafana-agent
+  namespace: grafana-agent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: grafana-agent
+  serviceName: grafana-agent
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        name: grafana-agent
+    spec:
+      containers:
+      - args:
+        - -config.expand-env
+        - -config.file=/etc/agent/agent.yaml
+        - -enable-features=integrations-next
+        - -server.http.address=0.0.0.0:8000
+        command:
+        - /bin/agent
+        env:
+        - name: HOSTNAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        envFrom:
+        - secretRef:
+            name: credentials
+        image: grafana/agent:v0.25.0
+        name: grafana-agent
+        ports:
+        - containerPort: 8000
+          name: http-metrics
+        securityContext:
+          capabilities:
+            add: ["SYS_TIME"]
+          privileged: true
+          runAsUser: 0
+        volumeMounts:
+        - mountPath: /var/lib/agent
+          name: agent-wal
+        - mountPath: /etc/agent
+          name: config
+        - mountPath: /host/root
+          name: rootfs
+          readOnly: true
+        - mountPath: /host/sys
+          name: sysfs
+          readOnly: true
+        - mountPath: /host/proc
+          name: procfs
+          readOnly: true
+      serviceAccount: grafana-agent
+      hostPID: true
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      volumes:
+      - name: config
+        configMap:
+          name: grafana-agent
+      - name: agent-wal
+        hostPath:
+          path: /grafana-agent-wal
+          type: DirectoryOrCreate
+      - name: rootfs
+        hostPath:
+          path: /
+      - name: sysfs
+        hostPath:
+          path: /sys
+      - name: procfs
+        hostPath:
+          path: /proc
