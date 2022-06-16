@@ -39,7 +39,7 @@ spec:
           name: http-metrics
         securityContext:
           capabilities:
-            add: ["SYS_TIME"]
+            add: [SYS_TIME]
           privileged: true
           runAsUser: 0
         volumeMounts:
