@@ -9,3 +9,4 @@ resources:
 - pvc.yaml
 - configmap-init.yaml
 - deployment.yaml
+- service.yaml

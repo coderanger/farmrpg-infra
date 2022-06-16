@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: etl
+  namespace: etl
+spec:
+  selector:
+    matchLabels:
+      app: etl
+  template:
+    metadata:
+      labels:
+        app: etl
+    spec:
+      initContainers:
+      - name: migrations
+        image: ghcr.io/coderanger/farmrpg-etl:main
+        imagePullPolicy: Always
+        command:
+        - .venv/bin/python
+        - -m
+        - alembic
+        - upgrade
+        - head
+        envFrom:
+        - secretRef:
+            name: credentials
+        resources:
+          requests:
+            memory: 1G
+          limits:
+            memory: 2G
+      containers:
+      - name: etl
+        image: ghcr.io/coderanger/farmrpg-etl:main
+        imagePullPolicy: Always
+        command:
+        - .venv/bin/python
+        - -m
+        - farmrpg_etl
+        - --tls=/tls
+        env:
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: /gcp/service-account.json
+        envFrom:
+        - secretRef:
+            name: credentials
+        resources:
+          requests:
+            memory: 1G
+          limits:
+            memory: 2G
+        ports:
+        - containerPort: 8443
+        volumeMounts:
+        - mountPath: /gcp
+          name: gcp
+        - mountPath: /tls
+          name: tls
+      volumes:
+      - name: gcp
+        secret:
+          secretName: gcp
+      - name: tls
+        secret:
+          secretName: tls
