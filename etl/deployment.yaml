@@ -17,14 +17,12 @@ spec:
     spec:
       initContainers:
       - name: migrations
-        image: ghcr.io/coderanger/farmrpg-etl:main
+        image: ghcr.io/coderanger/farmrpg-etl2:main
         imagePullPolicy: Always
         command:
         - .venv/bin/python
-        - -m
-        - alembic
-        - upgrade
-        - head
+        - manage.py
+        - migrate
         envFrom:
         - secretRef:
             name: credentials
@@ -35,14 +33,18 @@ spec:
             memory: 2G
       containers:
       - name: etl
-        image: ghcr.io/coderanger/farmrpg-etl:main
+        image: ghcr.io/coderanger/farmrpg-etl2:main
         imagePullPolicy: Always
         command:
         - .venv/bin/python
         - -m
-        - farmrpg_etl
-        - --tls=/tls
-        - --listen=0.0.0.0:443
+        - uvicorn
+        - --port=443
+        - --access-log
+        - --no-server-header
+        - --ssl-keyfile=/tls/tls.key
+        - --ssl-certfile=/tls/tls.crt
+        - etl.asgi:application
         env:
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: /gcp/service-account.json
