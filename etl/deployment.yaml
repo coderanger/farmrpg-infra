@@ -37,6 +37,8 @@ spec:
         volumeMounts:
         - mountPath: /gcp
           name: gcp
+        - mountPath: /tmp
+          name: tmp
       containers:
       - name: etl
         image: ghcr.io/coderanger/farmrpg-etl2:main
@@ -77,6 +79,8 @@ spec:
           name: gcp
         - mountPath: /tls
           name: tls
+        - mountPath: /tmp
+          name: tmp
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
       volumes:
@@ -86,3 +90,5 @@ spec:
       - name: tls
         secret:
           secretName: tls
+      - name: tmp
+        emptyDir: {}
