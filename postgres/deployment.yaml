@@ -27,7 +27,7 @@ spec:
         - containerPort: 5432
           name: postgres
         volumeMounts:
-        - mountPath: /var/lib/postgresql
+        - mountPath: /var/lib/postgresql/data
           name: data
         - mountPath: /docker-entrypoint-initdb.d
           name: init
