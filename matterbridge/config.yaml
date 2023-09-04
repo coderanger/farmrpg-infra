@@ -35,3 +35,33 @@ data:
 
     [[gateway.in]]
     account = "api.etl"
+
+    [[gateway]]
+    name = "alpha"
+    enable = true
+
+    [[gateway.inout]]
+    account = "discord.mw"
+    channel = "alpha"
+
+    [[gateway.inout]]
+    account = "discord.farmrpg"
+    channel = "alpha-testing"
+
+    [[gateway.in]]
+    account = "api.etl"
+
+    [[gateway]]
+    name = "beta"
+    enable = true
+
+    [[gateway.inout]]
+    account = "discord.mw"
+    channel = "beta"
+
+    [[gateway.inout]]
+    account = "discord.farmrpg"
+    channel = "beta-testing"
+
+    [[gateway.in]]
+    account = "api.etl"
