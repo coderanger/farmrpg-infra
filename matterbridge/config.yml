@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config
+  namespace: matterbridge
+data:
+  matterbridge.toml: |
+    [discord.farmrpg]
+    Server = "Farm RPG"
+    AutoWebhooks = true
+
+    [discord.mw]
+    Server = "Magic and Wires"
+    AutoWebhooks = true
+
+    [api.etl]
+    BindAddress = "0.0.0.0:4242"
+    Buffer = 10
+
+    [general]
+    # RemoteNickFormat = "[{PROTOCOL}/{BRIDGE}] <{NICK}> "
+    RemoteNickFormat = "{NICK}"
+
+    [[gateway]]
+    name = "staff_discord"
+    enable = true
+
+    [[gateway.inout]]
+    account = "discord.mw"
+    channel = "staff_discord"
+
+    [[gateway.inout]]
+    account = "discord.farmrpg"
+    channel = "staff"
+
+    [[gateway]]
+    name = "staff_game"
+    enable = true
+
+    [[gateway.out]]
+    account = "discord.mw"
+    channel = "staff"
+
+    [[gateway.in]]
+    account = "api.etl"

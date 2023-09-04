@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: matterbridge
+  namespace: matterbridge
+spec:
+  selector:
+    app: matterbridge
+  ports:
+  - port: 4242

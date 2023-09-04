@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: matterbridge
+  namespace: matterbridge
+spec:
+  selector:
+    matchLabels:
+      app: matterbridge
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 100%
+  template:
+    metadata:
+      labels:
+        app: matterbridge
+    spec:
+      containers:
+      - name: matterbridge
+        image: 42wim/matterbridge:stable
+        imagePullPolicy: Always
+        envFrom:
+        - secretRef:
+            name: credentials
+        resources:
+          requests:
+            memory: 128M
+          limits:
+            memory: 128M
+        securityContext:
+          capabilities:
+            drop: [ALL]
+          runAsUser: 65534
+          runAsGroup: 65534
+          readOnlyRootFilesystem: true
+        ports:
+        - containerPort: 4242
+          name: http
+        volumeMounts:
+        - mountPath: /etc/matterbridge
+          name: config
+      volumes:
+      - name: config
+        configMap:
+          configMapName: config
+      - name: credentials
+        secret:
+          secretName: credentials
