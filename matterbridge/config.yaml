@@ -22,23 +22,15 @@ data:
     RemoteNickFormat = "{NICK}"
 
     [[gateway]]
-    name = "staff_discord"
+    name = "staff"
     enable = true
 
     [[gateway.inout]]
     account = "discord.mw"
-    channel = "staff_discord"
+    channel = "staff"
 
     [[gateway.inout]]
     account = "discord.farmrpg"
-    channel = "staff"
-
-    [[gateway]]
-    name = "staff_game"
-    enable = true
-
-    [[gateway.out]]
-    account = "discord.mw"
     channel = "staff"
 
     [[gateway.in]]
