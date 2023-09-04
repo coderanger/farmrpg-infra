@@ -65,3 +65,26 @@ data:
 
     [[gateway.in]]
     account = "api.etl"
+
+    # Temp stuff
+    [[gateway]]
+    name = "staff2"
+    enable = true
+
+    [[gateway.out]]
+    account = "discord.mw"
+    channel = "staff"
+
+    [[gateway.in]]
+    account = "api.etl"
+
+    [[gateway]]
+    name = "alpha2"
+    enable = true
+
+    [[gateway.out]]
+    account = "discord.mw"
+    channel = "alpha"
+
+    [[gateway.in]]
+    account = "api.etl"
