@@ -6,5 +6,6 @@ generators:
 
 resources:
 - namespace.yaml
+- config.yaml
 - deployment.yaml
 - service.yaml
