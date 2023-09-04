@@ -42,7 +42,7 @@ spec:
       volumes:
       - name: config
         configMap:
-          configMapName: config
+          name: config
       - name: credentials
         secret:
           secretName: credentials
