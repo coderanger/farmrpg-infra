@@ -26,6 +26,8 @@ spec:
         env:
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: /gcp/service-account.json
+        - name: MATTERBRIDGE_API
+          value: http://matterbridge.matterbridge.svc:4242/
         envFrom:
         - secretRef:
             name: credentials
