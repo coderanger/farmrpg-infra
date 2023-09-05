@@ -55,7 +55,7 @@ spec:
         - --no-server-header
         - --ssl-keyfile=/tls/tls.key
         - --ssl-certfile=/tls/tls.crt
-        - etl.asgi:application
+        - farmrpg_etl.asgi:application
         env:
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: /gcp/service-account.json
